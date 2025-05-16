@@ -11,10 +11,15 @@ import os
 
 app = Flask(__name__)
 
-CORS(app, resources={r"/*": {"origins": [
-    "http://localhost:3000",
-    "https://jd-frontend-s11e.onrender.com"
-]}})
+CORS(app, resources={r"/*": {
+    "origins": [
+        "http://localhost:3000",
+        "https://jd-frontend-s11e.onrender.com"
+    ],
+    "methods": ["GET", "POST", "OPTIONS"],
+    "allow_headers": ["Content-Type"]
+}})
+
 
 # FRONTEND_URL_FROM_ENV = os.environ.get("FRONTEND_APP_URL") 
 # if FRONTEND_URL_FROM_ENV and FRONTEND_URL_FROM_ENV != "ALLOW_ALL_FOR_SETUP":
@@ -122,7 +127,7 @@ def predict():
                 return jsonify({"prediction": label, "class_index": predicted_class_index})
             else:
                 app.logger.error(f"Predicted class index {predicted_class_index} is out of bounds.")
-                return jsonify({"error": "Prediction resulted in an invalid class."}), 500
+                return jsonify({"error": "Prediction resulted in an invalid class."}), 400
         except Exception as e:
             app.logger.error(f"An error occurred during prediction: {e}", exc_info=True)
             return jsonify({"error": "An unexpected error occurred on the server during prediction."}), 500
