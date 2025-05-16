@@ -11,7 +11,10 @@ import os
 
 app = Flask(__name__)
 
-CORS(app)
+CORS(app, resources={r"/*": {"origins": [
+    "http://localhost:3000",
+    "https://jd-frontend-s11e.onrender.com"
+]}})
 
 # FRONTEND_URL_FROM_ENV = os.environ.get("FRONTEND_APP_URL") 
 # if FRONTEND_URL_FROM_ENV and FRONTEND_URL_FROM_ENV != "ALLOW_ALL_FOR_SETUP":
